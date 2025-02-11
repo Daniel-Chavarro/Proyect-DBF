@@ -11,7 +11,7 @@ CREATE TABLE Address (
 
 /*CREATE TABLE Ratings (
     ID_Rating INT PRIMARY KEY AUTO_INCREMENT,
-    Entity_Type ENUM('Product', 'Seller') NOT NULL,
+    Entity_Type ENUM('Product', 'User') NOT NULL,
     ID_Entity INT NOT NULL,
     Rating DECIMAL(2, 1) CHECK (Rating BETWEEN 0.0 AND 5.0),
     ID_User_FK INT NOT NULL,
@@ -19,6 +19,7 @@ CREATE TABLE Address (
     Comments TEXT,
     FOREIGN KEY (ID_User_FK) REFERENCES User(ID_User)
 );
+
 */
 
 CREATE TABLE IF NOT EXISTS StatusReport (
@@ -70,11 +71,11 @@ CREATE TABLE IF NOT EXISTS CategoryReport (
 
 CREATE TABLE IF NOT EXISTS Store(
 	ID_Store INT PRIMARY KEY AUTO_INCREMENT,
-	ID_Seller INT NOT NULL,
+	ID_User INT NOT NULL,
 	Name VARCHAR(100),
 	Date_Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	Rating DECIMAL(2,1) CHECK (Rating BETWEEN 0.0 AND 5.0),
-    FOREIGN KEY (ID_Seller) REFERENCES Seller(ID_Seller)
+    FOREIGN KEY (ID_User) REFERENCES User(ID_User)
 );
 
 -- Tabla de métodos de pago
@@ -82,8 +83,7 @@ CREATE TABLE IF NOT EXISTS PaymentMethods (
     ID_Payment_Method INT PRIMARY KEY AUTO_INCREMENT,
     Type VARCHAR(50) NOT NULL,
     Provider VARCHAR(50),
-    Card_Number VARCHAR(16),
-    Date_Due DATE,
+    Token VARCHAR(255) NOT NULL,
     Owner VARCHAR(100)
 );
 
@@ -105,28 +105,11 @@ CREATE TABLE IF NOT EXISTS User (
     FOREIGN KEY (ID_Address_FK) REFERENCES Address(ID_Address)
 );
 
--- Tabla de vendedores
-CREATE TABLE IF NOT EXISTS Seller (
-    ID_Seller INT PRIMARY KEY AUTO_INCREMENT,
-    First_Name VARCHAR(100) NOT NULL,
-    Last_Name VARCHAR(100) NOT NULL,
-    Email VARCHAR(100) NOT NULL UNIQUE,
-    Phone VARCHAR(20) NOT NULL,
-    Date_Register TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    Password VARCHAR(100) NOT NULL,
-    Date_Birth DATE NOT NULL,
-    ID_Account_Status INT NOT NULL,
-    Rating DECIMAL(2, 1) NOT NULL CHECK (Rating BETWEEN 0.0 AND 5.0),
-    ID_Address_FK INT NOT NULL,
-    FOREIGN KEY (ID_Account_Status) REFERENCES AccountStatus(ID_Account_Status)
-    FOREIGN KEY (ID_Address_FK) REFERENCES Address(ID_Address)
-);
-
 
 -- Tabla de productos
 CREATE TABLE IF NOT EXISTS Product (
     ID_Product INT PRIMARY KEY AUTO_INCREMENT,
-    ID_Seller INT NOT NULL,
+    ID_User INT NOT NULL,
     Name VARCHAR(100) NOT NULL,
     Description TEXT NOT NULL,
     Price DECIMAL(10, 2) NOT NULL,
@@ -136,7 +119,7 @@ CREATE TABLE IF NOT EXISTS Product (
     Date_Published TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     Brand VARCHAR(50) NOT NULL,
     Rating DECIMAL(2, 1) NOT NULL CHECK (Rating BETWEEN 0.0 AND 5.0),
-    FOREIGN KEY (ID_Seller) REFERENCES Seller(ID_Seller),
+    FOREIGN KEY (ID_User) REFERENCES User(ID_User),
     FOREIGN KEY (ID_Product_Status) REFERENCES ProductStatus(ID_Product_Status)
 );
 
@@ -161,19 +144,18 @@ CREATE TABLE IF NOT EXISTS Delivery (
 );
 
 -- Tabla de carrito de compras
+-- Relacionarlo con. cartItems
 CREATE TABLE IF NOT EXISTS ShoppingCart (
     ID_Shopping_Cart INT PRIMARY KEY AUTO_INCREMENT,
-    ID_Status_Cart INT NOT NULL,
-    ID_User INT NOT NULL,
+    ID_Status_Cart_FK INT NOT NULL,
+    ID_User_FK INT NOT NULL,
     Date_Created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (ID_User) REFERENCES User(ID_User)
-    FOREIGN KEY (ID_Status_Cart) REFERENCES StatusCart(ID_Status_Cart)
+    FOREIGN KEY (ID_User_FK) REFERENCES User(ID_User)
+    FOREIGN KEY (ID_Status_Cart_FK) REFERENCES StatusCart(ID_Status_Cart)
 );
 
 
-
-
-CREATE TABLE CartItems (
+CREATE TABLE IF NOT EXISTS CartItems (
     ID_Cart INT NOT NULL,
     ID_Product INT NOT NULL,
     Quantity INT NOT NULL,
@@ -185,13 +167,14 @@ CREATE TABLE CartItems (
 
 
 -- Tabla de transacciones
-CREATE TABLE IF NOT EXISTS Transaction (
+CREATE TABLE IF NOT EXISTS Receipt (
     ID_Transaction INT PRIMARY KEY AUTO_INCREMENT,
     ID_User INT NOT NULL,
     ID_Product INT NOT NULL,
     ID_Payment_Method INT NOT NULL,
     Amount DECIMAL(10, 2) NOT NULL,
     Date_Bought TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	Descritiption VARCHAR(100)
     ID_Transaction_Status INT NOT NULL,
     FOREIGN KEY (ID_User) REFERENCES User(ID_User),
     FOREIGN KEY (ID_Product) REFERENCES Product(ID_Product),
@@ -199,77 +182,55 @@ CREATE TABLE IF NOT EXISTS Transaction (
     FOREIGN KEY (ID_Transaction_Status) REFERENCES TransactionStatus(ID_Transaction_Status)
 );
 
-CREATE TABLE IF NOT EXISTS Receipts (
-    ID_Receipts INT PRIMARY KEY AUTO_INCREMENT,
-    ID_Transaction INT NOT NULL,
-    ID_User INT NOT NULL,
-    Date_Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    Details TEXT,
-    Amount_Paid DECIMAL(10, 2),
-    Taxes DECIMAL(10, 2),
-    FOREIGN KEY (ID_Transaction) REFERENCES Transaction(ID_Transaction),
-    FOREIGN KEY (ID_User) REFERENCES User(ID_User)
-);
-
-
-CREATE TABLE IF NOT EXISTS FavoritesList (
+--Agregar ID_Store_FK
+CREATE TABLE IF NOT EXISTS FavoritesListUserStore (
     ID_Favorites_List INT PRIMARY KEY AUTO_INCREMENT,
-    ID_User INT NOT NULL,
+    ID_User_FK INT NOT NULL,
     Name VARCHAR(100) NOT NULL,
     Date_Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (ID_User) REFERENCES User(ID_User)
+    FOREIGN KEY (ID_User) REFERENCES User(ID_User_FK)
 );
 
-CREATE TABLE FavoritesListSeller (
-    ID_Favorites_List INT,
-    ID_Seller INT,
+CREATE TABLE IF NOT EXISTS FavoriteListUserProduct (
+    ID_Favorites_List INT PRIMARY KEY AUTO_INCREMENT,
+    ID_User_FK INT NOT NULL,
+    Name VARCHAR(100) NOT NULL,
+    Date_Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ID_User) REFERENCES User(ID_User_FK)
+);
+
+
+CREATE TABLE FavoritesListUser (
+    ID_Favorites_List_FK INT,
+    ID_User_FK INT,
     Date_Favorited TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (ID_Favorites_List, ID_Seller),
-    FOREIGN KEY (ID_Favorites_List) REFERENCES FavoritesList(ID_Favorites_List),
-    FOREIGN KEY (ID_Seller) REFERENCES Seller(ID_Seller)
+    PRIMARY KEY (ID_Favorites_List_FK, ID_User),
+    FOREIGN KEY (ID_Favorites_List_FK) REFERENCES FavoriteListUserProduct(ID_Favorites_List),
+    FOREIGN KEY (ID_User_FK) REFERENCES User(ID_User)
 );
 
 
 
 CREATE TABLE IF NOT EXISTS ClientReport (
     ID_Report INT PRIMARY KEY AUTO_INCREMENT,
-    ID_User INT NOT NULL,
-    ID_Delivery INT,
-    ID_Category_Report INT NOT NULL,
+    ID_User_FK INT NOT NULL,
+    ID_Delivery_FK INT,
+    ID_Category_Report_FK INT NOT NULL,
     Description TEXT,
     Date_Report TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    ID_Status_Report INT NOT NULL,
-    FOREIGN KEY (ID_User) REFERENCES User(ID_User),
-    FOREIGN KEY (ID_Delivery) REFERENCES Delivery(ID_Delivery),
-    FOREIGN KEY (ID_Category_Report) REFERENCES CategoryReport(ID_Category_Report),
-    FOREIGN KEY (ID_Status_Report) REFERENCES StatusReport(ID_Status_Report)
+    ID_Status_Report_FK INT NOT NULL,
+    FOREIGN KEY (ID_User_FK) REFERENCES User(ID_User),
+    FOREIGN KEY (ID_Delivery_FK) REFERENCES Delivery(ID_Delivery),
+    FOREIGN KEY (ID_Category_Report_FK) REFERENCES CategoryReport(ID_Category_Report),
+    FOREIGN KEY (ID_Status_Report_FK) REFERENCES StatusReport(ID_Status_Report)
 );
 
 	
 CREATE TABLE IF NOT EXISTS UserDeliveryProvider (
-    ID_User INT NOT NULL,
-    ID_Provider_Delivery INT NOT NULL,
+    ID_User_FK INT NOT NULL,
+    ID_Provider_Delivery_FK INT NOT NULL,
     Date_Assigned TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (ID_User, ID_Provider_Delivery),
-    FOREIGN KEY (ID_User) REFERENCES User(ID_User),
-    FOREIGN KEY (ID_Provider_Delivery) REFERENCES DeliveryProvider(ID_Provider_Delivery)
-);
-
-CREATE TABLE IF NOT EXISTS UserSeller (
-    ID_User INT NOT NULL,
-    ID_Seller INT NOT NULL,
-    Date_Assigned TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (ID_User, ID_Seller),
-    FOREIGN KEY (ID_User) REFERENCES User(ID_User),
-    FOREIGN KEY (ID_Seller) REFERENCES Seller(ID_Seller)
-);
-
-
-CREATE TABLE IF NOT EXISTS DeliveryProduct (
-    ID_Delivery INT NOT NULL,
-    ID_Product INT NOT NULL,
-    Quantity INT NOT NULL,
-    PRIMARY KEY (ID_Delivery, ID_Product),
-    FOREIGN KEY (ID_Delivery) REFERENCES Delivery(ID_Delivery),
-    FOREIGN KEY (ID_Product) REFERENCES Product(ID_Product)
+    PRIMARY KEY (ID_User_FK, ID_Provider_Delivery_FK),
+    FOREIGN KEY (ID_User_FK) REFERENCES User(ID_User),
+    FOREIGN KEY (ID_Provider_Delivery_FK) REFERENCES DeliveryProvider(ID_Provider_Delivery)
 );
