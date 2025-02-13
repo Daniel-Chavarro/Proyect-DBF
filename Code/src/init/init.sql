@@ -9,6 +9,12 @@ CREATE TABLE Address (
     ZipCode VARCHAR(20)
 );
 
+CREATE TABLE IF NOT EXISTS CategoryProduct (
+    ID_Category INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(50) NOT NULL,
+    Description TEXT
+);
+
 CREATE TABLE AccountStatus (
     ID_Account_Status INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(50) NOT NULL,
@@ -97,13 +103,14 @@ CREATE TABLE Product (
     Description TEXT NOT NULL,
     Price DECIMAL(10, 2) NOT NULL,
     Quantity_Stock INT NOT NULL,
-    Category VARCHAR(50) NOT NULL,
+    ID_Category_FK INT NOT NULL,
     ID_Product_Status_FK INT NOT NULL,
     Date_Published TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     Brand VARCHAR(50) NOT NULL,
     Rating DECIMAL(2,1) NOT NULL CHECK (Rating BETWEEN 0.0 AND 5.0),
     FOREIGN KEY (ID_User_FK) REFERENCES User(ID_User),
-    FOREIGN KEY (ID_Product_Status_FK) REFERENCES ProductStatus(ID_Product_Status)
+    FOREIGN KEY (ID_Product_Status_FK) REFERENCES ProductStatus(ID_Product_Status),
+    FOREIGN KEY (ID_Category_FK) REFERENCES CategoryProduct(ID_Category)
 );
 
 CREATE TABLE Delivery (
