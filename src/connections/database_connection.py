@@ -1,6 +1,6 @@
 from typing import List
 
-from dao import ProjectDAO
+from DAO import ProjectModel
 
 
 class DatabaseConnection:
@@ -44,7 +44,7 @@ class DatabaseConnection:
             item_id (int): The id of the item to be deleted.
         """
 
-    def get_one(self, query: str, values: tuple) -> ProjectDAO:
+    def get_one(self, query: str, values: tuple) -> ProjectModel:
         """This method gets a on item from the repository based on any filter.
 
         Args:
@@ -55,7 +55,7 @@ class DatabaseConnection:
             The used who matched the filters.
         """
 
-    def get_many(self, query: str, values: tuple = ()) -> List[ProjectDAO]:
+    def get_many(self, query: str, values: tuple = ()) -> List[ProjectModel]:
         """This method get multiple elements from the repository
 
         Args:
