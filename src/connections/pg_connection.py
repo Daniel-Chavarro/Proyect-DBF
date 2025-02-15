@@ -18,7 +18,7 @@ class PostgresDatabaseConnection(DatabaseConnection):
     def __init__(self):
         self._dbname = "postgres"
         self._duser = "postgres"
-        self._dpass = "P4$$w0rd"
+        self._dpass = "admin123"
         self._dhost = "localhost"
         self._dport = "5432"
         self.connection = None

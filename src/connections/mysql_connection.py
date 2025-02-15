@@ -18,7 +18,7 @@ class MySQLDatabaseConnection(DatabaseConnection):
     def __init__(self):
         self._dbname = "mercadolibrexs"
         self._duser = "root"
-        self._dpass = "admin12345"  # Update the password accordingly
+        self._dpass = "admin123"  
         self._dhost = "localhost"
         self._dport = 3306
         self.connection = None
