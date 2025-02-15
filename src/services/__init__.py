@@ -1,2 +1,21 @@
-from .address import
+from .address import router as address_router
 from .users import router as users_router
+from .brand import router as brand_router
+from .cart import router as cart_router
+from .category_product  import router as category_product_router
+from .category_report import router as category_report_router
+from .client_report import router as client_report_router  
+from .delivery import router as delivery_router
+from .delivery_provider import router as delivery_provider_router
+from .favorite_list_user_product import router as favorite_list_user_product_router
+from .favorite_list_user_store import router as favorite_list_user_store_router
+from .payment_method import router as payment_method_router
+from .product import router as product_router
+from .product_status import router as product_status_router
+from .receipt import router as receipt_router
+from .shopping_cart import router as shopping_cart_router
+from .status_cart import router as status_cart_router
+from .status_report import router as status_report_router
+from .store import router as store_router
+from .transaction_status import router as transaction_status_router
+from .type_user import router as type_user_router
