@@ -1,4 +1,4 @@
-from connections import PostgresDatabaseConection as DatabaseConnection
+from connections import DatabaseConnection
 from DAO import CategoryProductData
 from typing import List
 

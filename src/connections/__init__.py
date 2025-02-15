@@ -1,3 +1,3 @@
-from .database_connection import DatabaseConnection
+# from .database_connection import DatabaseConnection
 from .mysql_connection import MySQLDatabaseConnection
-from .pg_connection import PostgresDatabaseConnection
+from .pg_connection import PostgresDatabaseConnection as DatabaseConnection
