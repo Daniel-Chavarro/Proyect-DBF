@@ -29,14 +29,16 @@ class TransactionStatusCrud:
             DELETE FROM transaction_status
             WHERE id_transaction_status = %s
         """
-        self.db_connection.delete(query, transaction_status_id)
+        values = (transaction_status_id,)
+        self.db_connection.delete(query, values)
     
     def get_by_id(self, transaction_status_id: int) -> TransactionStatusData:
         query = """
             SELECT * FROM transaction_status
             WHERE id_transaction_status = %s
         """
-        return self.db_connection.get_one(query, transaction_status_id)
+        values = (transaction_status_id,)
+        return self.db_connection.get_one(query, values)
 
     def get_all(self) -> List[TransactionStatusData]:
         query = """
@@ -49,4 +51,5 @@ class TransactionStatusCrud:
             SELECT * FROM transaction_status
             WHERE name LIKE %s
         """
-        return self.db_connection.get_one(query, status_name)
+        values = (status_name,)
+        return self.db_connection.get_one(query, values)

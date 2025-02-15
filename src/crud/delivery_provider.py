@@ -46,28 +46,26 @@ class DeliveryProviderCRUD():
         """
         return self._connection.get_many(query)
     
-    def get_provider_with_delivery(self, provider_id: int) -> DeliveryProviderData:
-        query = """
-            SELECT DeliveryProvider.*, Delivery.date_created AS delivery_date_created, Delivery.date_estimated_arrive AS delivery_date_estimated_arrive
-            FROM DeliveryProvider
-            JOIN Delivery ON DeliveryProvider.id_delivery_provider = Delivery.id_delivery_provider_fk
-            WHERE DeliveryProvider.id_delivery_provider = %s;
-        """
-        values = (provider_id,)
-        return self._connection.get_one(query, values)
-
-    def get_by_name_and_phone(self, name: str, phone: str) -> List[DeliveryProviderData]:
+    def get_by_name(self, name: str) -> DeliveryProviderData:
         query = """
             SELECT * FROM DeliveryProvider
-            WHERE name = %s AND phone = %s;
+            WHERE LOWER(name) LIKE LOWER(%s);
         """
-        values = (name, phone)
+        values = (f"%{name}%",)
         return self._connection.get_many(query, values)
-
-    def get_by_email_and_description(self, email: str, description: str) -> List[DeliveryProviderData]:
+    
+    def get_by_phone(self, phone: str) -> DeliveryProviderData:
         query = """
             SELECT * FROM DeliveryProvider
-            WHERE email = %s AND description = %s;
+            WHERE phone = %s;
         """
-        values = (email, description)
+        values = (phone,)
+        return self._connection.get_many(query, values)
+    
+    def get_by_email(self, email: str) -> DeliveryProviderData:
+        query = """
+            SELECT * FROM DeliveryProvider
+            WHERE email = %s;
+        """
+        values = (email,)
         return self._connection.get_many(query, values)

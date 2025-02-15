@@ -46,32 +46,6 @@ class CategoryProductCRUD():
         """
         return self._connection.get_many(query)
 
-    def get_category_with_product(self, category_id: int) -> CategoryProductData:
-        query = """
-            SELECT CategoryProduct.*, Product.name AS product_name, Product.description AS product_description
-            FROM CategoryProduct
-            JOIN Product ON CategoryProduct.id_category = Product.id_category_fk
-            WHERE CategoryProduct.id_category = %s;
-        """
-        values = (category_id,)
-        return self._connection.get_one(query, values)
-
-    def get_by_name_and_description(self, name: str, description: str) -> List[CategoryProductData]:
-        query = """
-            SELECT * FROM CategoryProduct
-            WHERE name = %s AND description = %s;
-        """
-        values = (name, description)
-        return self._connection.get_many(query, values)
-
-    def get_by_name_and_id(self, name: str, category_id: int) -> List[CategoryProductData]:
-        query = """
-            SELECT * FROM CategoryProduct
-            WHERE name = %s AND id_category = %s;
-        """
-        values = (name, category_id)
-        return self._connection.get_many(query, values)
-    
     def get_by_name(self, name: str) -> List[CategoryProductData]:
         query = """
             SELECT * FROM CategoryProduct
@@ -80,18 +54,4 @@ class CategoryProductCRUD():
         values = (name,)
         return self._connection.get_many(query, values)
     
-    def get_by_description(self, description: str) -> List[CategoryProductData]:
-        query = """
-            SELECT * FROM CategoryProduct
-            WHERE description = %s;
-        """
-        values = (description,)
-        return self._connection.get_many(query, values)
-    
-    def get_by_description_and_id(self, description: str, category_id: int) -> List[CategoryProductData]:
-        query = """
-            SELECT * FROM CategoryProduct
-            WHERE description = %s AND id_category = %s;
-        """
-        values = (description, category_id)
-        return self._connection.get_many(query, values)
+

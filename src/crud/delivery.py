@@ -30,7 +30,8 @@ class DeliveryCRUD():
             DELETE FROM Delivery
             WHERE id_delivery = %s;
         """
-        self._connection.delete(query, delivery_id)
+        values = (delivery_id,)
+        self._connection.delete(query, values)
     
     def get_by_id(self, delivery_id: int) -> DeliveryData:
         query = """
@@ -45,7 +46,7 @@ class DeliveryCRUD():
             SELECT * FROM Delivery;
         """
         return self._connection.get_many(query)
-    
+
     def get_by_user_id(self, user_id: int) -> List[DeliveryData]:
         query = """
             SELECT * FROM Delivery
@@ -53,7 +54,7 @@ class DeliveryCRUD():
         """
         values = (user_id,)
         return self._connection.get_many(query, values)
-    
+
     def get_by_status_id(self, status_id: int) -> List[DeliveryData]:
         query = """
             SELECT * FROM Delivery
@@ -61,7 +62,7 @@ class DeliveryCRUD():
         """
         values = (status_id,)
         return self._connection.get_many(query, values)
-    
+
     def get_by_provider_id(self, provider_id: int) -> List[DeliveryData]:
         query = """
             SELECT * FROM Delivery
@@ -69,7 +70,7 @@ class DeliveryCRUD():
         """
         values = (provider_id,)
         return self._connection.get_many(query, values)
-    
+
     def get_delivery_with_user(self, delivery_id: int) -> DeliveryData:
         query = """
             SELECT Delivery.*, Users.name AS user_name, Users.email AS user_email
@@ -79,7 +80,7 @@ class DeliveryCRUD():
         """
         values = (delivery_id,)
         return self._connection.get_one(query, values)
-    
+
     def get_delivery_with_status(self, delivery_id: int) -> DeliveryData:
         query = """
             SELECT Delivery.*, DeliveryStatus.name AS status_name, DeliveryStatus.description AS status_description
@@ -89,7 +90,7 @@ class DeliveryCRUD():
         """
         values = (delivery_id,)
         return self._connection.get_one(query, values)
-    
+
     def get_by_user_and_status(self, user_id: int, status_id: int) -> List[DeliveryData]:
         query = """
             SELECT * FROM Delivery
@@ -97,7 +98,7 @@ class DeliveryCRUD():
         """
         values = (user_id, status_id)
         return self._connection.get_many(query, values)
-    
+
     def get_by_provider_and_status(self, provider_id: int, status_id: int) -> List[DeliveryData]:
         query = """
             SELECT * FROM Delivery

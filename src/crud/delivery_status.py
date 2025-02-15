@@ -29,14 +29,18 @@ class DeliveryStatusCrud:
             DELETE FROM delivery_status
             WHERE id_delivery_status = %s
         """
-        self.db_connection.delete(query, delivery_status_id)
+        
+        values = (delivery_status_id,)
+        self.db_connection.delete(query, values)
     
     def get_by_id(self, delivery_status_id: int) -> DeliveryStatusData:
         query = """
             SELECT * FROM delivery_status
             WHERE id_delivery_status = %s
         """
-        return self.db_connection.get_one(query, delivery_status_id)
+        
+        values = (delivery_status_id,)
+        return self.db_connection.get_one(query, values)
 
     def get_all(self) -> List[DeliveryStatusData]:
         query = """
@@ -49,4 +53,5 @@ class DeliveryStatusCrud:
             SELECT * FROM delivery_status
             WHERE name LIKE %s
         """
-        return self.db_connection.get_one(query, status_name)
+        values = (status_name,)
+        return self.db_connection.get_one(query, values)

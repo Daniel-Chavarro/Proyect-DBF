@@ -29,14 +29,16 @@ class StatusCartCrud:
             DELETE FROM status_cart
             WHERE id_status_cart = %s
         """
-        self.db_connection.delete(query, status_cart_id)
+        values = (status_cart_id,)
+        self.db_connection.delete(query, values)
     
     def get_by_id(self, status_cart_id: int) -> StatusCartData:
         query = """
             SELECT * FROM status_cart
             WHERE id_status_cart = %s
         """
-        return self.db_connection.get_one(query, status_cart_id)
+        values = (status_cart_id,)
+        return self.db_connection.get_one(query, values)
 
     def get_all(self) -> List[StatusCartData]:
         query = """
@@ -49,4 +51,5 @@ class StatusCartCrud:
             SELECT * FROM status_cart
             WHERE LOWER(name) LIKE LOWER(%s)
         """
-        return self.db_connection.get_one(query, status_name)
+        values = (status_name,)
+        return self.db_connection.get_one(query, values)

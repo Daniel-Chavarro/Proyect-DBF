@@ -30,7 +30,8 @@ class FavoriteListUserProductCRUD():
             DELETE FROM FavoriteListUsersProduct
             WHERE id_favorite_product = %s;
         """
-        self._connection.delete(query, favorite_id)
+        values = (favorite_id,)
+        self._connection.delete(query, values)
     
     def get_by_id(self, favorite_id: int) -> FavoriteListUserProductData:
         query = """

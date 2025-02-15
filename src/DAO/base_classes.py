@@ -1,11 +1,12 @@
-from typing import Optional
+from typing import Optional, List
+from datetime import datetime
 from DAO.base_model import ProjectModel
 
 class UserData(ProjectModel):
     id_user: int = -1
     id_address_fk: int
-    id_account_status_fk: int
-    id_type_user_fk: int
+    id_account_status_fk: int = 1
+    id_type_user_fk: int = 1
     name: str
     last_name: str
     username: str
@@ -14,8 +15,10 @@ class UserData(ProjectModel):
     date_birth: str
     date_register: str
     password: str
-    is_active: bool = True
-    is_superuser: bool = False
+    status: Optional[str]
+    role: Optional[str]
+    country: Optional[str]
+    city: Optional[str]
 
 class TypeUserData(ProjectModel):
     id_type_user: int = -1
@@ -26,6 +29,7 @@ class StatusCartData(ProjectModel):
     id_status_cart: int = -1
     name: str
     description: Optional[str]
+
 class AccountStatusData(ProjectModel):
     id_account_status: int = -1
     name: str
@@ -43,7 +47,12 @@ class ProductData(ProjectModel):
     stock: Optional[int] = 0
     date_published: str
     rating: Optional[float] = 0.0
-    
+    # Added nested objects
+    store: Optional['StoreData'] = None
+    status: Optional['ProductStatusData'] = None
+    category: Optional['CategoryProductData'] = None
+    brand: Optional['BrandData'] = None
+
 class StoreData(ProjectModel):
     id_store: int = -1
     id_user_fk: int
@@ -53,6 +62,10 @@ class StoreData(ProjectModel):
     phone: str
     email: str
     date_created: str
+    # Added nested objects
+    owner: Optional['UserData'] = None
+    address: Optional['AddressData'] = None
+    products: List['ProductData'] = []
 
 class AddressData(ProjectModel):
     id_address: int = -1
@@ -94,7 +107,12 @@ class DeliveryData(ProjectModel):
     date_created: str
     date_estimated_arrive: str
     delivery_cost: float
-    
+    # Added nested objects
+    user: Optional['UserData'] = None
+    shopping_cart: Optional['ShoppingCartData'] = None
+    provider: Optional['DeliveryProviderData'] = None
+    status: Optional['DeliveryStatusData'] = None
+    address: Optional['AddressData'] = None
 
 class DeliveryStatusData(ProjectModel):
     id_delivery_status: int = -1
@@ -104,8 +122,13 @@ class DeliveryStatusData(ProjectModel):
 class ShoppingCartData(ProjectModel):
     id_shopping_cart: int = -1
     id_status_cart_fk: int
+    id_user_fk: int
     date_created: str
     total: float = 0.0
+    # Added nested objects
+    status: Optional[str] = None
+    items: List['CartItemData'] = []
+    delivery: Optional['DeliveryData'] = None
 
 class CartItemData(ProjectModel):
     id_cart_item: int = -1
@@ -113,6 +136,8 @@ class CartItemData(ProjectModel):
     id_product_fk: int
     quantity: int
     subtotal: float
+    # Added nested object
+    product: Optional['ProductData'] = None
 
 class FavoriteListUserStoreData(ProjectModel):
     id_favorite_store: int = -1

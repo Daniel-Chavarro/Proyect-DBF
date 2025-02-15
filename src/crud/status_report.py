@@ -29,14 +29,16 @@ class StatusReportCrud:
             DELETE FROM status_report
             WHERE id_status_report = %s
         """
-        self.db_connection.delete(query, status_report_id)
+        values = (status_report_id,)
+        self.db_connection.delete(query, values)
     
     def get_by_id(self, status_report_id: int) -> StatusReportData:
         query = """
             SELECT * FROM status_report
             WHERE id_status_report = %s
         """
-        return self.db_connection.get_one(query, status_report_id)
+        values = (status_report_id,)
+        return self.db_connection.get_one(query, values)
 
     def get_all(self) -> List[StatusReportData]:
         query = """
@@ -44,9 +46,10 @@ class StatusReportCrud:
         """
         return self.db_connection.get_many(query)
 
-    def get_by_status_name(self, status_name: str) -> StatusReportData:
+    def get_by_name(self, status_name: str) -> StatusReportData:
         query = """
             SELECT * FROM status_report
             WHERE name LIKE %s
         """
-        return self.db_connection.get_one(query, status_name)
+        values = (status_name,)
+        return self.db_connection.get_one(query, values)

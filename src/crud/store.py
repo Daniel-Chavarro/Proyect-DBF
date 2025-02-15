@@ -30,7 +30,8 @@ class StoreCRUD():
             DELETE FROM Store
             WHERE id_store = %s;
         """
-        self._connection.delete(query, store_id)
+        values = (store_id,)
+        self._connection.delete(query, values)
     
     def get_by_id(self, store_id: int) -> StoreData:
         query = """
@@ -45,7 +46,7 @@ class StoreCRUD():
             SELECT * FROM Store;
         """
         return self._connection.get_many(query)
-    
+
     def get_by_user_id(self, user_id: int) -> List[StoreData]:
         query = """
             SELECT * FROM Store
@@ -63,11 +64,11 @@ class StoreCRUD():
         return self._connection.get_many(query, values)
 
     def get_store_with_address(self, store_id: int) -> StoreData:
-            query = """
-                SELECT Store.*, Address.*
-                FROM Store
-                JOIN Address ON Store.id_address_fk = Address.id_address
-                WHERE Store.id_store = %s;
-            """
-            values = (store_id,)
-            return self._connection.get_one(query, values)
+        query = """
+            SELECT Store.*, Address.*
+            FROM Store
+            JOIN Address ON Store.id_address_fk = Address.id_address
+            WHERE Store.id_store = %s;
+        """
+        values = (store_id,)
+        return self._connection.get_one(query, values)

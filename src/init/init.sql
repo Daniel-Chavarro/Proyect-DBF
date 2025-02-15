@@ -156,6 +156,7 @@ CREATE TABLE Delivery (
 CREATE TABLE ShoppingCart (
     id_shopping_cart INT PRIMARY KEY AUTO_INCREMENT,
     id_status_cart_fk INT NOT NULL,
+    id_user_fk INT NOT NULL,
     date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     total DECIMAL(10, 2) NOT NULL DEFAULT 0.0,
     FOREIGN KEY (id_user_fk) REFERENCES Users(id_user),

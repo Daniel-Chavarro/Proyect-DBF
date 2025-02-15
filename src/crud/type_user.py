@@ -1,4 +1,4 @@
-from connections import PostgresDatabaseConection as DatabaseConnection
+from connections import PostgresDatabaseConnection as DatabaseConnection
 from DAO import TypeUserData
 from typing import List
 
@@ -45,3 +45,11 @@ class TypeUserCRUD():
             SELECT * FROM TypeUsers;
         """
         return self._connection.get_many(query)
+
+    def get_by_name(self, name: str) -> TypeUserData:
+        query = """
+            SELECT * FROM TypeUsers
+            WHERE name = %s;
+        """
+        values = (name,)
+        return self._connection.get_one(query, values)

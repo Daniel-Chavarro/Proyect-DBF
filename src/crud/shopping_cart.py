@@ -10,10 +10,10 @@ class ShoppingCartCRUD():
     
     def create(self, cart: ShoppingCartData) -> int:
         query = """
-            INSERT INTO ShoppingCart (id_status_cart_fk, date_created, total)
-            VALUES (%s, %s, %s);
+            INSERT INTO ShoppingCart (id_status_cart_fk, id_user_fk, date_created, total)
+            VALUES (%s, %s, %s, %s);
         """
-        values = (cart.id_status_cart_fk, cart.date_created, cart.total)
+        values = (cart.id_status_cart_fk, cart.id_user_fk, cart.date_created, cart.total)
         return self._connection.create(query, values)
     
     def update(self, cart: ShoppingCartData):
@@ -30,7 +30,8 @@ class ShoppingCartCRUD():
             DELETE FROM ShoppingCart
             WHERE id_shopping_cart = %s;
         """
-        self._connection.delete(query, cart_id)
+        values = (cart_id,)
+        self._connection.delete(query, values)
     
     def get_by_id(self, cart_id: int) -> ShoppingCartData:
         query = """
@@ -97,7 +98,6 @@ class ShoppingCartCRUD():
         """
         values = (status_id,)
         return self._connection.get_many(query, values)
-    
     
     def get_by_total(self, total: float) -> List[ShoppingCartData]:
         query = """

@@ -45,3 +45,27 @@ class PaymentMethodCRUD():
             SELECT * FROM PaymentMethods;
         """
         return self._connection.get_many(query)
+
+    def get_by_type(self, type: str) -> List[PaymentMethodData]:
+        query = """
+            SELECT * FROM PaymentMethods
+            WHERE type = %s;
+        """
+        values = (type,)
+        return self._connection.get_many(query, values)
+    
+    def get_by_provider(self, provider: str) -> List[PaymentMethodData]:
+        query = """
+            SELECT * FROM PaymentMethods
+            WHERE provider = %s;
+        """
+        values = (provider,)
+        return self._connection.get_many(query, values)
+    
+    def get_by_token(self, token: str) -> PaymentMethodData:
+        query = """
+            SELECT * FROM PaymentMethods
+            WHERE token = %s;
+        """
+        values = (token,)
+        return self._connection.get_one(query, values)
