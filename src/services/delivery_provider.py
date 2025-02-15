@@ -3,12 +3,12 @@ from fastapi import HTTPException, APIRouter
 
 from DAO import DeliveryProviderData
 from crud import DeliveryProviderCRUD
-from connections import PostgresDatabaseConnection
+from connections import DatabaseConnection
 
 
 router = APIRouter()
 crud = DeliveryProviderCRUD()
-conn = PostgresDatabaseConnection()
+conn = DatabaseConnection()
 
 @router.post("/delivery_provider/create", response_model=int)
 def create(data: DeliveryProviderData):

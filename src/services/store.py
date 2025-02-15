@@ -2,12 +2,12 @@ from typing import List, Optional
 from fastapi import HTTPException, APIRouter
 
 from DAO import StoreData
-from crud import StoreCrud
-from connections import PostgresDatabaseConnection
+from crud import StoreCRUD
+from connections import DatabaseConnection
 
 router = APIRouter()
-crud = StoreCrud()
-conn = PostgresDatabaseConnection()
+crud = StoreCRUD()
+conn = DatabaseConnection()
 
 @router.post("/store/create", response_model=int)
 def create(data: StoreData):

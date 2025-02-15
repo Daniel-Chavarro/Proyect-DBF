@@ -3,11 +3,11 @@ from fastapi import HTTPException, APIRouter
 
 from DAO import StatusReportData
 from crud import StatusReportCrud
-from connections import PostgresDatabaseConnection
+from connections import DatabaseConnection
 
 router = APIRouter()
 crud = StatusReportCrud()
-conn = PostgresDatabaseConnection()
+conn = DatabaseConnection()
 
 @router.post("/status_report/create", response_model=int)
 def create(data: StatusReportData):

@@ -2,12 +2,12 @@ from typing import List, Optional
 from fastapi import HTTPException, APIRouter
 
 from DAO import FavoriteListUserProductData
-from crud import FavoriteListUserProductCrud
-from connections import PostgresDatabaseConnection
+from crud import FavoriteListUserProductCRUD
+from connections import DatabaseConnection
 
 router = APIRouter()
-crud = FavoriteListUserProductCrud()
-conn = PostgresDatabaseConnection()
+crud = FavoriteListUserProductCRUD()
+conn = DatabaseConnection()
 
 @router.post("/favorite_list_user_product/create", response_model=int)
 def create(data: FavoriteListUserProductData):

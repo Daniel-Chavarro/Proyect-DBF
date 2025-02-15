@@ -2,12 +2,12 @@ from typing import List, Optional
 from fastapi import HTTPException, APIRouter
 
 from DAO import CategoryReportData
-from crud import CategoryReportCrud
-from connections import PostgresDatabaseConnection
+from crud import CategoryReportCRUD
+from connections import DatabaseConnection
 
 router = APIRouter()
-crud = CategoryReportCrud()
-conn = PostgresDatabaseConnection()
+crud = CategoryReportCRUD()
+conn = DatabaseConnection()
 
 @router.post("/category_report/create", response_model=int)
 def create(data: CategoryReportData):

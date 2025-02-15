@@ -2,12 +2,12 @@ from typing import List, Optional
 from fastapi import HTTPException, APIRouter
 
 from DAO import ReceiptData
-from crud import ReceiptCrud
-from connections import PostgresDatabaseConnection
+from crud import ReceiptCRUD
+from connections import DatabaseConnection
 
 router = APIRouter()
-crud = ReceiptCrud()
-conn = PostgresDatabaseConnection()
+crud = ReceiptCRUD()
+conn = DatabaseConnection()
 
 @router.post("/receipt/create", response_model=int)
 def create(data: ReceiptData):

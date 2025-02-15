@@ -20,7 +20,7 @@ class PostgresDatabaseConnection(DatabaseConnection):
         self._duser = "postgres"
         self._dpass = "admin123"
         self._dhost = "localhost"
-        self._dport = "5432"
+        self._dport = "5433"
         self.connection = None
 
     def connect(self):

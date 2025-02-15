@@ -17,10 +17,10 @@ class MySQLDatabaseConnection(DatabaseConnection):
 
     def __init__(self):
         self._dbname = "mercadolibrexs"
-        self._duser = "root"
+        self._duser = "db_sql"
         self._dpass = "admin123"  
         self._dhost = "localhost"
-        self._dport = 3306
+        self._dport = 3307
         self.connection = None
 
     def connect(self):

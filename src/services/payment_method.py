@@ -2,12 +2,12 @@ from typing import List, Optional
 from fastapi import HTTPException, APIRouter
 
 from DAO import PaymentMethodData
-from crud import PaymentMethodCrud
-from connections import PostgresDatabaseConnection
+from crud import PaymentMethodCRUD
+from connections import DatabaseConnection
 
 router = APIRouter()
-crud = PaymentMethodCrud()
-conn = PostgresDatabaseConnection()
+crud = PaymentMethodCRUD()
+conn = DatabaseConnection()
 
 @router.post("/payment_method/create", response_model=int)
 def create(data: PaymentMethodData):

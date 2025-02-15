@@ -3,11 +3,11 @@ from fastapi import HTTPException, APIRouter
 
 from DAO import TransactionStatusData
 from crud import TransactionStatusCrud
-from connections import PostgresDatabaseConnection
+from connections import DatabaseConnection
 
 router = APIRouter()
 crud = TransactionStatusCrud()
-conn = PostgresDatabaseConnection()
+conn = DatabaseConnection()
 
 @router.post("/transaction_status/create", response_model=int)
 def create(data: TransactionStatusData):

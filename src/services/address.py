@@ -2,12 +2,12 @@ from typing import List, Optional
 from fastapi import HTTPException, APIRouter
 
 from DAO import AddressData
-from crud import AddressCrud
-from connections import PostgresDatabaseConnection
+from crud import AddressCRUD
+from connections import DatabaseConnection
 
 router = APIRouter()
-crud = AddressCrud()
-conn = PostgresDatabaseConnection()
+crud = AddressCRUD()
+conn = DatabaseConnection()
 
 @router.post("/address/create", response_model=int)
 def create(data: AddressData):

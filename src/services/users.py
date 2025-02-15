@@ -3,15 +3,16 @@ from fastapi import HTTPException, APIRouter
 
 from DAO import UserData
 from crud import UsersCRUD
-from connections import PostgresDatabaseConnection
+from connections import DatabaseConnection
 
 
 router = APIRouter()
 crud = UsersCRUD()
-conn = PostgresDatabaseConnection()
+conn = DatabaseConnection()
 
-@router.post("/user/create", response_model=int)
+@router.post("/user/create/", response_model=int)
 def create(data: UserData):
+    print(conn.list_schemas())
     """This service creates a new user in the database.
     Remember that the user data must have the specified struture."""
     print("Creating user", data)

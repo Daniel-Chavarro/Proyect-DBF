@@ -66,4 +66,5 @@ app.include_router(type_user_router)
 @app.get("/")
 async def root():
     """This method is used to get the root of the API."""
-    return {"message": "Welcome to the Football API!"}
+
+    return {"message": "Welcome to the MercadoLibreXS API!"}

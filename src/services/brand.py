@@ -3,12 +3,12 @@ from fastapi import HTTPException, APIRouter
 
 from DAO import BrandData
 from crud import BrandCRUD
-from connections import PostgresDatabaseConnection
+from connections import DatabaseConnection
 
 
 router = APIRouter()
 crud = BrandCRUD()
-conn = PostgresDatabaseConnection()
+conn = DatabaseConnection()
 
 @router.post("/brand/create", response_model=int)
 def create(data: BrandData):

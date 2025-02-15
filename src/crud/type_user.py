@@ -1,4 +1,4 @@
-from connections import PostgresDatabaseConnection as DatabaseConnection
+from connections import DatabaseConnection
 from DAO import TypeUserData
 from typing import List
 
@@ -13,16 +13,16 @@ class TypeUserCRUD():
             INSERT INTO TypeUsers (name, description)
             VALUES (%s, %s);
         """
-        values = (type_user.name, type_user.description)
+        values = (type_user.id_type_user ,type_user.name, type_user.description)
         return self._connection.create(query, values)
     
-    def update(self, type_user: TypeUserData):
+    def update(self, id, type_user: TypeUserData):
         query = """
             UPDATE TypeUsers
             SET name = %s, description = %s
             WHERE id_type_user = %s;
         """
-        values = (type_user.name, type_user.description, type_user.id_type_user)
+        values = (type_user.name, type_user.description, id)
         self._connection.update(query, values)
         
     def delete(self, type_user_id: int):

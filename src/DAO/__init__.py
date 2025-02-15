@@ -1,2 +1,25 @@
 from .base_model import ProjectModel
-from .base_classes import StatusCartData,AccountStatusData ,UserData, ProductData, StoreData, AddressData, BrandData, CategoryProductData, ProductStatusData, DeliveryProviderData, DeliveryStatusData, ShoppingCartData, CartItemData, ReceiptData, PaymentMethodData, TransactionStatusData, ClientReportData, CategoryReportData, StatusReportData, FavoriteListUserStoreData, FavoriteListUserProductData, TypeUserData
+from .base_classes import (
+    StatusCartData,
+    AccountStatusData ,
+    UserData, 
+    ProductData, 
+    StoreData, 
+    AddressData, 
+    BrandData, 
+    CategoryProductData, 
+    ProductStatusData, 
+    DeliveryProviderData, 
+    DeliveryStatusData, 
+    ShoppingCartData, 
+    CartItemData, 
+    ReceiptData, 
+    PaymentMethodData, 
+    TransactionStatusData, 
+    ClientReportData, 
+    CategoryReportData, 
+    StatusReportData, 
+    FavoriteListUserStoreData, 
+    FavoriteListUserProductData, 
+    TypeUserData,
+    DeliveryData)

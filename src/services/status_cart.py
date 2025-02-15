@@ -3,11 +3,11 @@ from fastapi import HTTPException, APIRouter
 
 from DAO import StatusCartData
 from crud import StatusCartCrud
-from connections import PostgresDatabaseConnection
+from connections import DatabaseConnection
 
 router = APIRouter()
 crud = StatusCartCrud()
-conn = PostgresDatabaseConnection()
+conn = DatabaseConnection()
 
 @router.post("/status_cart/create", response_model=int)
 def create(data: StatusCartData):
